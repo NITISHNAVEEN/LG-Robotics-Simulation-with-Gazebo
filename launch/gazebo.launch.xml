@@ -22,6 +22,11 @@
         <param name="config_file" 
                value="$(var gazebo_config_path)" />
     </node>
+    
+    <node pkg="rosbridge_server" 
+          exec="rosbridge_websocket" 
+          name="rosbridge_websocket" 
+          output="screen"/>
 
     <include file="$(find-pkg-share lg_arm)/launch/control.launch.py" />
 
