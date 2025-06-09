@@ -7,8 +7,7 @@ This is the official documentation for the Robotics Simulation Project for Liqui
 Below you will find the instructions to simulate the SO-Arm-100 in a Gazebo environment and control it through your browser
 
 ## Table of Contents
-- [Docker Install](#docker-install)
-- Build from source 
+- [Docker Install](#docker-install) 
 
 ## Docker Install
 
