@@ -7,7 +7,8 @@ This is the official documentation for the Robotics Simulation Project for Liqui
 Below you will find the instructions to simulate the SO-Arm-100 in a Gazebo environment and control it through your browser
 
 ## Table of Contents
-- [Docker Install](#docker-install) 
+- [Docker Install](#docker-install) [Recommended]
+- [Build from Source](#build-from-source)
 
 ## Docker Install
 
@@ -49,3 +50,25 @@ Basic Gazebo Window Controls: <br>
     Click Connect and Scroll Down to see if the `Continuous Control` optioned is already checked. 
 
     Now Move the slider left or right and Control the RoboArm accordingly.
+
+## Build from Source
+
+### Prerequisites
+Here we would have quite a few prerequisites. 
+- Recommended OS: Ubuntu 22.04 LTS (CodeName: Jammy)
+- ROS Version: ROS2 Humble
+- Gazebo Version: Gazebo Fortress
+### Additional Dependencies
+- ros2_control
+
+    ```bash
+    sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers ros-ign-gz-ros2-control
+    ```
+
+-  rosbridge suite
+
+    ```bash
+    sudo apt install ros-humble-rosbridge-server
+    ```
+### Instructions
+
