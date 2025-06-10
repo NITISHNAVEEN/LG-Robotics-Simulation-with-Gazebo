@@ -63,7 +63,7 @@ Here we would have quite a few prerequisites.
 - ros2_control
 
     ```bash
-    sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers ros-ign-gz-ros2-control
+    sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-ign-ros2-control
     ```
 
 -  rosbridge suite
