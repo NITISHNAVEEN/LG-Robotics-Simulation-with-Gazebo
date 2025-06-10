@@ -58,6 +58,7 @@ Here we would have quite a few prerequisites.
 - Recommended OS: Ubuntu 22.04 LTS (CodeName: Jammy)
 - ROS Version: ROS2 Humble
 - Gazebo Version: Gazebo Fortress
+- Git 
 ### Additional Dependencies
 - ros2_control
 
@@ -72,3 +73,30 @@ Here we would have quite a few prerequisites.
     ```
 ### Instructions
 
+Now that you have your dependencies installed, run these commands to build the package. 
+> Currently the Git repository is private so you have to link your Github with your local system through PAT(Personal Access Token) but once the repository is public this would be a problem any more.
+
+```bash
+cd
+echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
+mkdir -p lg_arm_ws/src/
+git clone --branch so_arm_dev --single-branch https://github.com/LiquidGalaxyLAB/LG-Robotics-Simulation-with-Gazebo.git lg_arm
+```
+
+Now you will have a `lg_arm_ws` directory in your home directory and `lg_arm` package inside `lg_arm_ws/lg_arm`
+
+Next go forward and open a new terminal and navigate to the workspace and build it.
+ ```bash
+ cd lg_arm_ws/
+ colcon build --symlink-install
+ ```
+Now source the workspace and launch your ROS2 launch file.
+```bash
+source ~/lg_arm_ws/install/setup.bash
+ros2 launch lg_arm gazebo.launch.xml
+```
+Next download this [controller html](https://github.com/LiquidGalaxyLAB/LG-Robotics-Simulation-with-Gazebo/blob/so_arm_dev/controller_webpage.html) and store it in any directory of your choice.
+Now open this html page in any browser of your choice while the container is running and you can see the Gazebo world.
+
+Click Connect and Scroll Down to see if the `Continuous Control` optioned is already active. 
+Now you can control the Robotic Arm from your Browser.
