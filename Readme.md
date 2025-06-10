@@ -47,7 +47,7 @@ Basic Gazebo Window Controls: <br>
 
     Next open this html page in any browser of your choice while the container is running and you can see the Gazebo world.
 
-    Click Connect and Scroll Down to see if the `Continuous Control` optioned is already active. 
+    Click Connect and Scroll Down to see if the `Continuous Control` option is already active. 
 
     Now Move the slider left or right and Control the RoboArm accordingly.
 
@@ -95,8 +95,10 @@ Now source the workspace and launch your ROS2 launch file.
 source ~/lg_arm_ws/install/setup.bash
 ros2 launch lg_arm gazebo.launch.xml
 ```
-Next download this [controller html](https://github.com/LiquidGalaxyLAB/LG-Robotics-Simulation-with-Gazebo/blob/so_arm_dev/controller_webpage.html) and store it in any directory of your choice.
-Now open this html page in any browser of your choice while the container is running and you can see the Gazebo world.
+You will now see a Gazebo window pop up in your system along with the SO Arm 100 simulated inside it.
 
-Click Connect and Scroll Down to see if the `Continuous Control` optioned is already active. 
+Next download this [controller html](https://github.com/LiquidGalaxyLAB/LG-Robotics-Simulation-with-Gazebo/blob/so_arm_dev/controller_webpage.html) and store it in any directory of your choice.
+Now open this html page in any browser of your choice while Gazebo is running and you can see the Robotic Arm inside it.
+
+Click Connect and Scroll Down to see if the `Continuous Control` option is already active. 
 Now you can control the Robotic Arm from your Browser.
