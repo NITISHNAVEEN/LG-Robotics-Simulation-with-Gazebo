@@ -23,7 +23,7 @@ For simulating this Robotic Arm through Docker, you would need docker engine ins
         ```
     - Next run this in your terminal to give it display permissions
         ```bash
-        xhost+
+        xhost +
         ```
     - Next run this Image with the necessary configuration as given below
         ```bash
