@@ -143,12 +143,11 @@ class ControlsPage extends StatelessWidget {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: controller.resetAll,
-                      child: const Text("Reset All"),
+                      child: const Text( "Reset All"),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    flex: 2,
                     child: ElevatedButton(
                       onPressed: controller.isConnected.value ? controller.sendJointPositions : null,
                       child: const Text("Send to Robot"),
@@ -161,10 +160,10 @@ class ControlsPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   const Text("Continuous Mode"),
-                  Obx(() => Switch(
+                  Switch(
                         value: controller.continuousMode.value,
                         onChanged: (val) => controller.continuousMode.value = val,
-                      ),),
+                      ),
                 ],
               )
             ],

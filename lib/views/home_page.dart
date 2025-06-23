@@ -23,12 +23,12 @@ class Homepage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('LG Robotics',
         style: TextStyle(fontSize: 32,fontWeight: FontWeight.bold),),
-        backgroundColor: const Color.fromARGB(255, 221, 210, 200),
+        backgroundColor: const Color.fromARGB(255, 250, 224, 199),
       ),
           body: pages[controller.selectedIndex.value],
           bottomNavigationBar: BottomNavigationBar(
 
-            backgroundColor: const Color.fromARGB(255, 221, 210, 200),
+            backgroundColor: const Color.fromARGB(255, 250, 224, 199),
             selectedItemColor: Colors.black87,
             unselectedItemColor: Colors.black.withValues(alpha: 0.2),
 
