@@ -8,25 +8,53 @@ class ControlsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        title: const Text("Robot Joint Controller"),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 1,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildConnectionCard(),
-            const SizedBox(height: 24),
-            _buildJointControllerCard(),
-          ],
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      behavior: HitTestBehavior.opaque,
+      child: Scaffold(
+        backgroundColor: Colors.grey[50],
+        appBar: AppBar(
+          title: const Text("Robot Joint Controller"),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          elevation: 1,
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildTextBox(),
+              _buildConnectionCard(),
+              const SizedBox(height: 24),
+              _buildJointControllerCard(),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTextBox() {
+    return Column(
+      children: [
+          TextField(
+            controller: controller.textController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          decoration: const InputDecoration(
+            label: Text("IP address"),
+            hintText: "Enter your network IP here",
+            prefixText: "ws://",
+            suffixText: ":9090",
+            border: OutlineInputBorder(),
+          ),
+        ),
+        // const SizedBox(height: 10),
+        // OutlinedButton(
+        //       onPressed: controller.submitText,
+        //       child: const Text("Submit"),
+        //     ),
+      ],
     );
   }
 

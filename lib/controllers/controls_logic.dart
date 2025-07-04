@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
@@ -7,6 +8,23 @@ class ControlsController extends GetxController {
   final isConnected = false.obs;
   final isConnecting = false.obs;
   final continuousMode = false.obs;
+  final textController = TextEditingController();
+
+  // void submitText() {
+  //   FocusManager.instance.primaryFocus?.unfocus(); // Removes focus
+  //   final value = textController.text.trim();
+  //   if (value.isNotEmpty) {
+  //     // Your logic here (e.g., print or API call)
+  //     print("Submitted: $value");
+  //     Get.snackbar("Submitted", value,
+  //         snackPosition: SnackPosition.BOTTOM,
+  //         backgroundColor: Colors.blue[100]);
+  //   } else {
+  //     Get.snackbar("Error", "Text field is empty",
+  //         snackPosition: SnackPosition.BOTTOM,
+  //         backgroundColor: Colors.red[100]);
+  //   }
+  // }
 
   WebSocketChannel? _channel;
 
@@ -31,7 +49,10 @@ class ControlsController extends GetxController {
   void connectWebSocket() async {
     isConnecting.value = true;
     try {
-      _channel = WebSocketChannel.connect(Uri.parse('ws://10.0.2.2:9090'));
+      FocusManager.instance.primaryFocus?.unfocus(); 
+      String rosbridgeUrl = "ws://${textController.text}:9090";
+      print("Submitted: $rosbridgeUrl");
+      _channel = WebSocketChannel.connect(Uri.parse(rosbridgeUrl));
 
       _channel!.stream.listen(
         (message) => print("Received: $message"),
