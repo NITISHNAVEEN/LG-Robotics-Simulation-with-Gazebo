@@ -34,7 +34,7 @@ For simulating this Robotic Arm through Docker, you would need docker engine ins
         --env="QT_X11_NO_MITSHM=1" \
         --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
         --device=/dev/dri:/dev/dri \
-        devxdebanjan/lg_dockerhub:arm_controlv1
+        devxdebanjan/lg_dockerhub:latest
         ```
 A Gazebo Window now appears with the simulated SO Arm 100 Roboarm.
 Basic Gazebo Window Controls: <br>
