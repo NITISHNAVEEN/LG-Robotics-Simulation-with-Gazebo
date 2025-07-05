@@ -9,7 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 
 install(
-  DIRECTORY urdf launch config assets
+  DIRECTORY urdf launch config assets worlds
   DESTINATION share/${PROJECT_NAME}
 )
 
