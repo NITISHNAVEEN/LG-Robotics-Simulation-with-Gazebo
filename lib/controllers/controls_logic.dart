@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
@@ -9,6 +10,7 @@ class ControlsController extends GetxController {
   final isConnecting = false.obs;
   final continuousMode = false.obs;
   final textController = TextEditingController();
+  final getIp = GetStorage();
 
   // void submitText() {
   //   FocusManager.instance.primaryFocus?.unfocus(); // Removes focus
@@ -50,6 +52,7 @@ class ControlsController extends GetxController {
     isConnecting.value = true;
     try {
       FocusManager.instance.primaryFocus?.unfocus(); 
+      getIp.write("rbip", textController.text);
       String rosbridgeUrl = "ws://${textController.text}:9090";
       print("Submitted: $rosbridgeUrl");
       _channel = WebSocketChannel.connect(Uri.parse(rosbridgeUrl));
@@ -118,8 +121,20 @@ class ControlsController extends GetxController {
   }
 
   @override
+void onInit() {
+  super.onInit();
+  if (getIp.hasData("rbip")) {
+    textController.text = getIp.read("rbip");
+  } else {
+    textController.text = "";
+  }
+}
+
+
+  @override
   void onClose() {
     _channel?.sink.close(status.goingAway);
+    textController.dispose();
     super.onClose();
   }
 }
