@@ -66,11 +66,11 @@ Now open any browser of your choice and type this address with following ports n
 
 2.1 Download the RoboSim flutter apk and Enter your network ip here: 
 
-![ss7](https://raw.githubusercontent.com/devxdebanjan/Task4/refs/heads/main/robosim_compose_ss7.png)
+<img alt="ss7" src="https://raw.githubusercontent.com/devxdebanjan/Task4/refs/heads/main/robosim_compose_ss7.jpeg" height="500px">
 
 Now connect to the server and scroll down to activate Continuous Mode. 
 
-![ss8](https://raw.githubusercontent.com/devxdebanjan/Task4/refs/heads/main/robosim_compose_ss8.png)
+<img alt="ss7" src="https://raw.githubusercontent.com/devxdebanjan/Task4/refs/heads/main/robosim_compose_ss8.jpeg" height="500px">
 
 Now you can control the robot with help of the sliders in the app fro your mobile phone in real-time. 
 
