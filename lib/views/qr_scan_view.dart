@@ -2,14 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:get/get.dart';
-import 'package:robocontrol/controllers/qr_controller.dart';
+import 'package:robocontrol/controllers/settings_controller.dart';
 
 class AlternativeQRWidget extends StatelessWidget {
   const AlternativeQRWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final QRController qrController = Get.find();
+    final SettingsController qrController = Get.find();
 
     return Scaffold(
       appBar: AppBar(
@@ -23,7 +23,7 @@ class AlternativeQRWidget extends StatelessWidget {
 }
 
 class _MobileScannerView extends StatefulWidget {
-  final QRController controller;
+  final SettingsController controller;
 
   const _MobileScannerView({required this.controller});
 
