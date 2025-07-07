@@ -19,7 +19,7 @@ For simulating this Robotic Arm through Docker, you would need docker engine ins
 - ### Simulation
     - First Pull the necessary Docker Image
         ```bash
-        docker pull devxdebanjan/lg_dockerhub:arm_controlv1
+        docker pull devxdebanjan/lg_dockerhub:latest
         ```
     - Next run this in your terminal to give it display permissions
         ```bash
