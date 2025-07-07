@@ -68,7 +68,7 @@ Now open any browser of your choice and type this address with following ports n
 
 <img alt="ss7" src="https://raw.githubusercontent.com/devxdebanjan/Task4/refs/heads/main/robosim_compose_ss7.jpeg" height="500px">
 
-Now connect to the server and scroll down to activate Continuous Mode. 
+Now connect to the server and scroll down to activate **Continuous Mode**. 
 
 <img alt="ss7" src="https://raw.githubusercontent.com/devxdebanjan/Task4/refs/heads/main/robosim_compose_ss8.jpeg" height="500px">
 
