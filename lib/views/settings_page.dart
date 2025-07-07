@@ -46,12 +46,12 @@ class SettingsPage extends StatelessWidget {
             child: Obx(
               () => Column(
                 children: [
-                  Text(
-                    settingsController.qrCode.isEmpty
-                        ? "No QR Data available"
-                        : "Scanned QR: ${settingsController.qrCode.value}",
-                    style: const TextStyle(fontSize: 20.0),
-                  ),
+                  // Text(
+                  //   settingsController.qrCode.isEmpty
+                  //       ? "No QR Data available"
+                  //       : "Scanned QR: ${settingsController.qrCode.value}",
+                  //   style: const TextStyle(fontSize: 20.0),
+                  // ),
                   SizedBox(height: 15.0),
                   TextField(
                     controller: settingsController.ipController,
@@ -127,9 +127,57 @@ class SettingsPage extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      settingsController.sshConnected.value ? "Disconnect" : "Connect",
+                      settingsController.sshConnected.value
+                          ? "Disconnect"
+                          : "Connect",
                       style: TextStyle(fontSize: 20.0),
                     ),
+                  ),
+                  SizedBox(height: 20.0),
+                  OutlinedButton(
+                    onPressed: () async {
+                      final result = await settingsController.sendCommand(
+                        'firefox',
+                      );
+                      if (result != null) {
+                        // Get.snackbar("Command Result", ": $result");
+                        print("Command output: $result");
+                      } else {
+                        print("Command failed or returned null");
+                      }
+                    },
+                    child: Text(
+                      "Send Command",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      OutlinedButton(
+                        onPressed: settingsController.shutdown,
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStateProperty.all(
+                            const Color.fromARGB(255, 246, 155, 155),
+                          )
+                        ),
+                        child: Text(
+                          "ShutDown",
+                          style: TextStyle(fontSize: 20.0, color: Colors.grey.shade800),
+                        ),
+                      ),
+                      SizedBox(width: 20.0),
+                      OutlinedButton(
+                        onPressed: settingsController.reboot,
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStateProperty.all(
+                            const Color.fromARGB(255, 157, 253, 199),
+                          )
+                        ),
+                        child: Text("Reboot", style: TextStyle(fontSize: 20.0, color: Colors.grey.shade800)),
+                      ),
+                    ],
                   ),
                 ],
               ),
