@@ -12,20 +12,19 @@ class ViewsPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildStyledButton(
-            onPressed: settingsController.shutdown,
-            label: "Shutdown",
-            icon: Icons.power_settings_new,
-            backgroundColor: const Color(0xFFFFCDD2),
+          FractionallySizedBox(
+            widthFactor: 0.8,
+            child: TextField(
+              controller: settingsController.streamIpController,
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.network_wifi),
+                labelText: "Server IP Address",
+                hintText: "Enter the server IP address",
+                border: OutlineInputBorder(),
+              ),
+            ),
           ),
-          SizedBox(height: 16.0),
-          _buildStyledButton(
-            onPressed: settingsController.reboot,
-            label: "Reboot",
-            icon: Icons.refresh,
-            backgroundColor: const Color(0xFFC8E6C9),
-          ),
-          SizedBox(height: 16.0),
+            SizedBox(height: 16.0),
           _buildStyledButton(
             onPressed: settingsController.launchStream,
             label: "Launch Robot View",
@@ -38,6 +37,20 @@ class ViewsPage extends StatelessWidget {
             label: "Close Robot View",
             icon: Icons.videocam_off,
             backgroundColor: const Color(0xFFFFF9C4),
+          ),
+          SizedBox(height: 16.0),
+          _buildStyledButton(
+            onPressed: settingsController.shutdown,
+            label: "Shutdown",
+            icon: Icons.power_settings_new,
+            backgroundColor: const Color(0xFFFFCDD2),
+          ),
+          SizedBox(height: 16.0),
+          _buildStyledButton(
+            onPressed: settingsController.reboot,
+            label: "Reboot",
+            icon: Icons.refresh,
+            backgroundColor: const Color(0xFFC8E6C9),
           ),
         ],
       ),

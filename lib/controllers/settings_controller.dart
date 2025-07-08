@@ -13,6 +13,8 @@ class SettingsController extends GetxController {
   final sshPortController = TextEditingController();
   final rigsController = TextEditingController();
 
+  final streamIpController = TextEditingController();
+
   late String _host;
   late String _username;
   late String _password;
@@ -176,6 +178,17 @@ class SettingsController extends GetxController {
       return;
     }
 
+    String streamIp = streamIpController.text;
+
+      if (streamIp.isEmpty) {
+        Get.snackbar(
+          "Invalid Stream IP",
+          "Please enter a valid Stream IP",
+          backgroundColor: const Color.fromARGB(255, 250, 121, 104),
+        );
+        return;
+      }
+
     for  (var i = int.parse(_rigs); i >=1; i--) {
       if(i>((_totalRigs!/2)+1)){
         _streamPort = 8083-(_totalRigs!-i+1);
@@ -183,9 +196,9 @@ class SettingsController extends GetxController {
       else{
         _streamPort = 8083+i-1;
       }
-      
+
       sendCommand(
-        'sshpass -p $pw ssh -t lg$i "DISPLAY=:0 chromium-browser --start-fullscreen http://192.168.1.6:$_streamPort"'
+        'sshpass -p $pw ssh -t lg$i "DISPLAY=:0 chromium-browser --start-fullscreen $streamIp:$_streamPort"'
       );
     }
   }
