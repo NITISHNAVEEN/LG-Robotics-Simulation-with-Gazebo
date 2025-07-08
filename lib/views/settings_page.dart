@@ -8,7 +8,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settingsController = Get.put(SettingsController());
+    final SettingsController settingsController = Get.find();
 
     return SingleChildScrollView(
       child: Column(
@@ -52,6 +52,39 @@ class SettingsPage extends StatelessWidget {
                   //       : "Scanned QR: ${settingsController.qrCode.value}",
                   //   style: const TextStyle(fontSize: 20.0),
                   // ),
+                  SizedBox(height: 15.0),
+                  Row(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(width: 8.0), // Leading space
+                      Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color:
+                              settingsController.sshConnected.value
+                                  ? Colors.green
+                                  : Colors.grey,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      SizedBox(width: 10.0), // Space between dot and text
+                      Text(
+                        settingsController.sshConnected.value
+                            ? "Connected"
+                            : "Not Connected",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w500,
+                          color:
+                              settingsController.sshConnected.value
+                                  ? Colors.green.shade800
+                                  : Colors.grey.shade700,
+                        ),
+                      ),
+                      SizedBox(width: 8.0), // Trailing space
+                    ],
+                  ),
                   SizedBox(height: 15.0),
                   TextField(
                     controller: settingsController.ipController,
@@ -134,51 +167,6 @@ class SettingsPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20.0),
-                  OutlinedButton(
-                    onPressed: () async {
-                      final result = await settingsController.sendCommand(
-                        'firefox',
-                      );
-                      if (result != null) {
-                        // Get.snackbar("Command Result", ": $result");
-                        print("Command output: $result");
-                      } else {
-                        print("Command failed or returned null");
-                      }
-                    },
-                    child: Text(
-                      "Send Command",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      OutlinedButton(
-                        onPressed: settingsController.shutdown,
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all(
-                            const Color.fromARGB(255, 246, 155, 155),
-                          )
-                        ),
-                        child: Text(
-                          "ShutDown",
-                          style: TextStyle(fontSize: 20.0, color: Colors.grey.shade800),
-                        ),
-                      ),
-                      SizedBox(width: 20.0),
-                      OutlinedButton(
-                        onPressed: settingsController.reboot,
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all(
-                            const Color.fromARGB(255, 157, 253, 199),
-                          )
-                        ),
-                        child: Text("Reboot", style: TextStyle(fontSize: 20.0, color: Colors.grey.shade800)),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),

@@ -18,7 +18,9 @@ class SettingsController extends GetxController {
   late String _password;
   late String _port;
   late String _rigs;
+  int? _totalRigs;
   SSHClient? _client;
+  late int _streamPort;
 
   final sshModel = GetStorage();
 
@@ -53,6 +55,14 @@ class SettingsController extends GetxController {
         _host,
         int.parse(_port),
       ).timeout(const Duration(seconds: 8));
+
+      _totalRigs = int.tryParse(_rigs);
+      if (_totalRigs != null) {
+        print("Parsed: $_totalRigs");
+      } else {
+        print("Invalid integer string");
+        throw Exception("Invalid Number of Rigs");
+      }
 
       _client = SSHClient(
         socket,
@@ -157,6 +167,39 @@ class SettingsController extends GetxController {
     for  (var i = int.parse(_rigs); i >=1; i--) {
       await sendCommand(
           'sshpass -p $pw ssh -t lg$i "echo $pw | sudo -S reboot"');
+    }
+  }
+
+  Future<void> launchStream() async {
+    final String pw = _password;
+    if (!await isConnected()) {
+      return;
+    }
+
+    for  (var i = int.parse(_rigs); i >=1; i--) {
+      if(i>((_totalRigs!/2)+1)){
+        _streamPort = 8083-(_totalRigs!-i+1);
+      }
+      else{
+        _streamPort = 8083+i-1;
+      }
+      
+      sendCommand(
+        'sshpass -p $pw ssh -t lg$i "DISPLAY=:0 chromium-browser --start-fullscreen http://192.168.1.6:$_streamPort"'
+      );
+    }
+  }
+
+  Future<void> closeStream() async {
+    final String pw = _password;
+    if (!await isConnected()) {
+      return;
+    }
+
+    for  (var i = int.parse(_rigs); i >=1; i--) {
+      await sendCommand(
+    'sshpass -p $pw ssh -t lg$i "pkill -f chromium-browser"'
+  );
     }
   }
 

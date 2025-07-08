@@ -4,6 +4,7 @@ import 'package:robocontrol/controllers/nav_controller.dart';
 import 'package:robocontrol/views/controls_page.dart';
 import 'package:robocontrol/views/settings_page.dart';
 import 'package:robocontrol/views/views_page.dart';
+import 'package:robocontrol/controllers/settings_controller.dart';
 
 class Homepage extends StatelessWidget {
   Homepage({super.key});
@@ -17,6 +18,7 @@ class Homepage extends StatelessWidget {
   ];
 
   @override
+  final settingsController = Get.put(SettingsController());
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
           appBar: AppBar(
