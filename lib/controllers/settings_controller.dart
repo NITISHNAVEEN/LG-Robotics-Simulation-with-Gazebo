@@ -197,6 +197,8 @@ class SettingsController extends GetxController {
         _streamPort = 8083+i-1;
       }
 
+      await sendCommand('sshpass -p $pw ssh -t lg$i "pkill -f chromium-browser"');
+
       sendCommand(
         'sshpass -p $pw ssh -t lg$i "DISPLAY=:0 chromium-browser --start-fullscreen $streamIp:$_streamPort"'
       );
