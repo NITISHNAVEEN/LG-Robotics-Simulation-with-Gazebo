@@ -4,6 +4,7 @@
 
 - OS: Linux
 - Docker and Docker Compose v2
+- Nvidia Drivers Installed and Configured for Docker
 
 ### Instructions
 
