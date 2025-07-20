@@ -4,7 +4,7 @@
 
 - OS: Linux
 - Docker and Docker Compose v2
-- Nvidia Drivers Installed and Configured for Docker
+- [Nvidia Drivers Installed and Configured for Docker](https://github.com/LiquidGalaxyLAB/LG-Robotics-Simulation-with-Gazebo/blob/docker-compose-config/Nvidia-Docker.md)
 
 ### Instructions
 
