@@ -10,7 +10,6 @@ sudo apt install -y nvidia-driver-535
 sudo reboot
 ```
 
-Now it shows your GPU.
 > Note: Look up the compatible Nvidia Drivers for your GPU if 535 does not work for you
 
 ### Next the runtime of docker has to be modified and to support this, some tools have to be downloaded
