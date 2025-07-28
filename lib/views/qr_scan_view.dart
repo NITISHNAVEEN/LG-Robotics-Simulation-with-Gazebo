@@ -53,7 +53,7 @@ class _MobileScannerViewState extends State<_MobileScannerView> {
                   CircularProgressIndicator(color: Colors.white),
                   SizedBox(height: 16),
                   Text(
-                    'Processing QR Code...',
+                    'Detected QR Code... \nKeep your Camera Steady',
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ],

@@ -18,8 +18,8 @@ class Homepage extends StatelessWidget {
   ];
 
   @override
-  final settingsController = Get.put(SettingsController());
   Widget build(BuildContext context) {
+    final settingsController = Get.put(SettingsController());
     return Obx(() => Scaffold(
           appBar: AppBar(
             title: const Text(
