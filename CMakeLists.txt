@@ -9,8 +9,13 @@ endif()
 find_package(ament_cmake REQUIRED)
 
 install(
-  DIRECTORY urdf launch config assets worlds
+  DIRECTORY urdf launch config assets worlds controller
   DESTINATION share/${PROJECT_NAME}
+)
+
+install(PROGRAMS
+  controller/jacobian.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()
