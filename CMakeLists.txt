@@ -14,7 +14,7 @@ install(
 )
 
 install(PROGRAMS
-  controller/jacobian.py
+  controller/jacobian.py controller/demo.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
