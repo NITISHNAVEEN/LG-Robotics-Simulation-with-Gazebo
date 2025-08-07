@@ -14,7 +14,7 @@ case $choice in
         docker compose -f docker-compose-soarm-exp.yaml up
         ;;
     2)
-        echo "Launching Amigabot..."
+        echo "Launching SO Arm..."
         docker compose -f docker-compose-soarm-demo.yaml up
         ;;
     3)
