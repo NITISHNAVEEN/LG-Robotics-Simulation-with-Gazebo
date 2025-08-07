@@ -1,0 +1,38 @@
+services:
+  ros2_sim:
+    image: devxdebanjan/lg_dockerhub:demo_controlv1
+    container_name: ros2_sim
+    network_mode: host
+    ipc: host
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    devices:
+      - /dev/dri:/dev/dri
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+  flask_server:
+    image: devxdebanjan/lg_dockerhub:flask_server_v2
+    container_name: flask_server
+    network_mode: host
+    ipc: host
+    depends_on:
+      - ros2_sim
+    runtime: nvidia
+    environment:
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
