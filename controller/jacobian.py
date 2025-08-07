@@ -54,7 +54,7 @@ class ArmController(Node):
             msg.points.append(point)
 
             self.joint_publisher.publish(msg)
-            self.get_logger().info(f"Published: {point.positions}")
+            # self.get_logger().info(f"Published: {point.positions}")
             # else:
             #     raise Exception("Point out of Reach")
             
