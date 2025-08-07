@@ -5,11 +5,7 @@
     <let name="urdf_path" value="$(find-pkg-share amigabot_pkg)/urdf/groundbot/amigabot.urdf.xacro" />
 
     <set_env name="GZ_SIM_RESOURCE_PATH" value="$(find-pkg-share amigabot_pkg)" />
-    <!-- <set_env name="GAZEBO_MODEL_PATH" value="$(find-pkg-share amigabot_pkg)/models" /> -->
-    <!-- <append_env
-    name="GAZEBO_MODEL_PATH"
-    value=":$(find-pkg-prefix phoenixbot_gazebo)/share:$(find-pkg-share phoenixbot_gazebo)/models:$(find-pkg-prefix amigabot_pkg)/share:$(find-pkg-share amigabot_pkg)/models" />
-     -->
+    
     <node pkg="robot_state_publisher" exec="robot_state_publisher">
         <param name="robot_description" value="$(command 'xacro $(var urdf_path)')"></param>
     </node>
@@ -28,8 +24,9 @@
 
     <node pkg="amigabot_pkg" exec="joystick_listener.py" output="screen" />
 
-    <!-- <node pkg="rviz2" exec="rviz2" output="screen" /> -->
-
-    <!-- <include file="$(find-pkg-share open_arm)/launch/control.launch.py" /> -->
+    <node pkg="rosbridge_server" 
+          exec="rosbridge_websocket" 
+          name="rosbridge_websocket" 
+          output="screen"/>
 
 </launch>
