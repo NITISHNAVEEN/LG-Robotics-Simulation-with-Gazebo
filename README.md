@@ -44,9 +44,9 @@ You will be asked for an input about which Docker World and Robot you want to ru
 ![input](assets/input.png)
 
 Depending on the Docker World you want to run give an input:
--  SO Arm Interactive(1): You can control the SO Arm 100 through joysticks.
-- SO Arm Demo(2): You can run a demo from the app where robot itse;f reaches for the box and picks it up and drops it in the container.
-- Amigabot(3): You can control the amigabot through your phone joystick and drive it freely.
+-  **SO Arm Interactive (1)**: You can control the SO Arm 100 through joysticks.
+- **SO Arm Demo (2)**: You can run a demo from the app where robot itse;f reaches for the box and picks it up and drops it in the container.
+- **Amigabot (3)**: You can control the amigabot through your phone joystick and drive it freely.
 
 Once you enter a valid input and hit Enter your terminal shows:
 
