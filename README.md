@@ -8,54 +8,62 @@
 
 ### Instructions
 
-Setting up the Docker Server requires two steps: 
+Setting up the Docker Server requires these steps: 
 
-1. Clone the `docker-compose.yaml` file:- <br> Sample Code: 
+1. **Clone the docker-compose-config branch of the repository**:- <br> Sample Code: 
 
 ```bash
 cd
 git clone --branch docker-compose-config --single-branch https://github.com/LiquidGalaxyLAB/LG-Robotics-Simulation-with-Gazebo.git deploy_robosim
 ```
-In case the git does not work for now as it is a private repository, you can make a directory place the docker-compose.yaml inside it. Sample code:
-```bash
-mkdir ~/deploy_robosim
-cd ~/deploy_robosim
-# Make a file named docker-compose.yaml here and copy the contents from this repository's branch docker-compose-config
-```
+> In case the git does not work for now as it is a private repository, you can download the folder and then unzip it.
 
 At the end of step 1 your file structure should look like this:
 
-![ss1](https://raw.githubusercontent.com/devxdebanjan/Task4/refs/heads/main/robosim_compose_ss1.png)
+![Initial Setup](assets/init.png)
 
-2. Run this file:- 
+2. **Make the choose-docker.sh file executable**:- This command has to be only run for the first time anyone is setting up the directory. Identify the absolute path for the file and then run this command: *(for e.g.: file is at ~/deploy_robosim)*
 
-This is very simple.<br> 
-- Just go to the location where you saved your file. If you are following everything in this documentation, the file location should be `~/deploy_robosim`
-- Open ports for GUI apps in docker using `xhost +`
-- Run the command `docker compose up`<br>
+```bash
+chmod +x ~/deploy_robosim/choose-docker.sh
+```
+
+3. **Start the Docker Server:**
+
+This is the final step.<br> 
+- Go to the diectory where you saved your bash script (choose-docker.sh) file. If you are following everything in this documentation, the directory should be `~/deploy_robosim`
+
+- Run the command `./choose-docker.sh`<br>
 Sample code: 
 ```bash
 cd ~/deploy_robosim
-xhost +
-docker compose up
+./choose-docker.sh
 ```
-If everything is fine, you will see something like this: 
+You will be asked for an input about which Docker World and Robot you want to run: 
 
-![ss2](https://raw.githubusercontent.com/devxdebanjan/Task4/refs/heads/main/robosim_compose_ss2.png)
+![input](assets/input.png)
+
+Depending on the Docker World you want to run give an input:
+-  SO Arm Interactive(1): You can control the SO Arm 100 through joysticks.
+- SO Arm Demo(2): You can run a demo from the app where robot itse;f reaches for the box and picks it up and drops it in the container.
+- Amigabot(3): You can control the amigabot through your phone joystick and drive it freely.
+
+Once you enter a valid input and hit Enter your terminal shows:
+
+![logs](assets/logs.png)
 
 > Note: <br>
-If you face any problem while running this ```docker compose up``` command, that can be due to a container with the same name running in your server already.<br>
-To stop something like this: type ```docker container prune``` in the terminal. 
+If you face a problem while running the choose-docker.sh file which suggests that a container with the same name is already present in the computer, then terminate(Ctrl+C) the program and type ```docker container prune -f``` in the terminal. Finally, restart to see the changes.<br>
 
-## Further Steps
+## FAQ
 
-### 1. How to see the Robotic Environment Stream?
+### 1. How to see the Robotic Environment Stream? / How to know my device IP to be enetered in the App?
 
-Search for an IP address in the terminal logs that appear after you run `docker compose up` command. Here you will find an address starting with preferably something like: 192.xxx. 
+Search for an IP address in the terminal logs that appear after you run `./choose-docker.sh` command. Here you will find an address that is printed **after** the 127.xxx address.
 
 ![ss4](https://raw.githubusercontent.com/devxdebanjan/Task4/refs/heads/main/robosim_compose_ss4.png)
 
-That is your Wifi LAN IP. You can cross check this by typing `ip addr` in your terminal and look for this `wlp` address: 
+That is your **LAN IP**. You can cross check this by typing `ip addr` in your terminal and look for this `wlp` address: 
 
 ![ss5](https://raw.githubusercontent.com/devxdebanjan/Task4/refs/heads/main/robosim_compose_ss5.png)
 
