@@ -27,6 +27,7 @@ services:
     build:
       context: ./flask-server
       dockerfile: Dockerfile
+    image: flask_server_image
     container_name: flask_server_robosim
     network_mode: host
     ipc: host
