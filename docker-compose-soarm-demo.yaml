@@ -1,6 +1,6 @@
 services:
   ros2_sim:
-    image: devxdebanjan/lg_dockerhub:demo_controlv1
+    image: devxdebanjan/lg_dockerhub:demo_control_latest
     container_name: ros2_sim
     network_mode: host
     ipc: host
@@ -21,7 +21,7 @@ services:
             - capabilities: [gpu]
 
   flask_server:
-    image: devxdebanjan/lg_dockerhub:flask_server_v2
+    image: devxdebanjan/lg_dockerhub:flask_server_latest
     container_name: flask_server
     network_mode: host
     ipc: host
