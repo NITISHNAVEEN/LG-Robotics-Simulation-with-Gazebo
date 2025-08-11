@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:robosim/controllers/controls.dart';
-import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:robosim/controllers/robots/arm_demo_controller.dart';
 
 class ArmDemo extends StatelessWidget {
