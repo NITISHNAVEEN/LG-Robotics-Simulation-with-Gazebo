@@ -52,7 +52,7 @@ class ArmDemo extends StatelessWidget {
           Container(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Joystick',
+              'Run Demo',
               style: TextStyle(
                 color: Colors.grey.shade800,
                 fontWeight: FontWeight.bold,
@@ -61,8 +61,24 @@ class ArmDemo extends StatelessWidget {
             ),
           ),
           const Divider(),
+          // const SizedBox(height: 12),
+          _buildRunDemoButton("Start",armController.runDemo),
           const SizedBox(height: 16),
-          _buildGripperButton("Start",armController.runDemo),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 216, 216, 216),
+            ),
+            child: const Text(
+              "Note: Once the Demo is completed, exit this simulation and go back to the Interactive Mode. No explicit controls available here!",
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+                fontWeight: FontWeight.w400,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
         ],
       ),
     );
@@ -181,7 +197,7 @@ class ArmDemo extends StatelessWidget {
   }
 
 
-  Widget _buildGripperButton(String label, VoidCallback onPressed) {
+  Widget _buildRunDemoButton(String label, VoidCallback onPressed) {
     return SizedBox(
       height: 80,
       width: 80,

@@ -61,7 +61,7 @@ class ArmExp extends StatelessWidget {
             ),
           ),
           const Divider(),
-          const SizedBox(height: 16),
+          // const SizedBox(height: 12),
           _buildJoystickControls(armController),
         ],
       ),
