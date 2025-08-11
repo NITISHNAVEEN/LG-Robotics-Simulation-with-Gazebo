@@ -6,9 +6,11 @@ import 'package:robosim/controllers/robots/amiga_controller.dart';
 import 'package:robosim/controllers/robots/arm_controller.dart';
 import 'package:robosim/controllers/robots/arm_demo_controller.dart';
 import 'package:robosim/views/home.dart';
+import 'package:robosim/views/splash_screen.dart';
 import 'controllers/settings_controller.dart';
 
 void main() async{
+  WidgetsFlutterBinding.ensureInitialized(); 
   await GetStorage.init();
   Get.put(ControlsController());
   Get.put(SettingsController());
@@ -29,7 +31,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 85, 85, 85)),
       ),
-      home: Homepage(),
+      home: const SplashScreen(),
     );
   }
 }
