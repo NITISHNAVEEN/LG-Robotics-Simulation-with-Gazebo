@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'dart:math';
 import 'package:get/get.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:robosim/controllers/controls.dart'; // Import joystick package

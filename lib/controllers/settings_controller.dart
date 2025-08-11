@@ -224,7 +224,7 @@ class SettingsController extends GetxController {
     if (!confirmed) return; 
         final String pw = _password;
 
-        if (!await isConnected() || pw == null) {
+        if (!await isConnected()) {
           return;
         }
 
