@@ -1,5 +1,5 @@
 name: robosim
-description: "A new Flutter project."
+description: "Flutter App to simulated Robots on Liquid Galaxy | GSoC 2025"
 publish_to: 'none'
 version: 0.1.0
 
@@ -24,6 +24,15 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: "^0.14.4"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  adaptive_icon_background: "#FFFFFF" 
+  adaptive_icon_foreground: "assets/icon/icon.png"
+  adaptive_icon_foreground_inset: 24
 
 flutter:
   uses-material-design: true
