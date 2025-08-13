@@ -1,7 +1,7 @@
 services:
   ros2_sim:
     build:
-      context: ./robot-pkg      
+      context: ./robot-pkg-demo      
       dockerfile: Dockerfile
     image: so-arm-demo
     container_name: ros2_so_arm
