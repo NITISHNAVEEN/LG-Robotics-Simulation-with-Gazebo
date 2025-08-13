@@ -1,10 +1,10 @@
 services:
   ros2_sim:
     build:
-      context: ./robot-pkg       
+      context: ./robot-pkg      
       dockerfile: Dockerfile
-    image: so-arm-interactive
-    container_name: ros2_so_arm_interactive
+    image: so-arm-demo
+    container_name: ros2_so_arm
     network_mode: host
     ipc: host
     environment:
