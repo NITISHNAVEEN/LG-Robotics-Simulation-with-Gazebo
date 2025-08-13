@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5DOF Robotic Arm Controller</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .connection-panel {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+            background: #f8f9fa;
+        }
+
+        .connection-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .connection-row label {
+            font-weight: 600;
+            min-width: 120px;
+            color: #333;
+        }
+
+        .connection-row input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .connection-row input:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-left: 15px;
+        }
+
+        .status.connected {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+
+        .status.disconnected {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .controls-panel {
+            padding: 30px;
+        }
+
+        .joint-control {
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .joint-control:hover {
+            border-color: #2196F3;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .joint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .joint-name {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .joint-value {
+            background: #2196F3;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .joint-limits {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .slider-container {
+            position: relative;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .publish-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .time-controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .time-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .time-input label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .time-input input {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            width: 80px;
+            text-align: center;
+        }
+
+        .message-preview {
+            background: #f5f5f5;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .publish-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .connection-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .connection-row label {
+                min-width: auto;
+                margin-bottom: 5px;
+            }
+
+            .joint-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .time-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .publish-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🦾 5DOF Robotic Arm Controller</h1>
+            <p>Real-time joint trajectory control via ROS2</p>
+        </div>
+
+        <div class="connection-panel">
+            <div class="connection-row">
+                <label>ROS Bridge URL:</label>
+                <input type="text" id="rosBridgeUrl" value="ws://localhost:9090" placeholder="ws://localhost:9090">
+                <button class="btn btn-primary" id="connectBtn" onclick="toggleConnection()">Connect</button>
+                <span class="status disconnected" id="connectionStatus">Disconnected</span>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div id="jointControls"></div>
+        </div>
+
+        <div class="publish-section">
+            <h3 style="margin-bottom: 20px; color: #333;">Trajectory Parameters</h3>
+            
+            <div class="time-controls">
+                <div class="time-input">
+                    <label>Duration (sec):</label>
+                    <input type="number" id="timeSec" value="1" min="0" step="0.1">
+                </div>
+                <div class="time-input">
+                    <label>Nanoseconds:</label>
+                    <input type="number" id="timeNanosec" value="0" min="0" step="1">
+                </div>
+            </div>
+
+            <div class="message-preview" id="messagePreview"></div>
+
+            <div class="publish-controls">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                    <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: #333;">
+                        <input type="checkbox" id="continuousToggle" checked onchange="toggleContinuousMode()" 
+                               style="width: 18px; height: 18px; accent-color: #2196F3;">
+                        🔄 Continuous Control
+                    </label>
+                    <span style="font-size: 0.9em; color: #666;">
+                        (Publishes automatically as you move sliders)
+                    </span>
+                </div>
+                
+                <button class="btn btn-success" id="publishBtn" onclick="publishTrajectory()" disabled>
+                    📡 Publish Trajectory
+                </button>
+                <button class="btn btn-primary" onclick="updatePreview()">
+                    🔄 Update Preview
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js"></script>
+    <script type="text/javascript">
+        // Joint configuration with limits
+        const joints = [
+            { name: "Shoulder_Rotation", min: -3.14, max: 3.14, value: 0 },
+            { name: "Shoulder_Pitch", min: -1.57, max: 1.57, value: 0 },
+            { name: "Elbow", min: -1.57, max: 1.57, value: 0 },
+            { name: "Wrist_Pitch", min: -1.57, max: 1.57, value: 0 },
+            { name: "Wrist_Roll", min: -3.14, max: 3.14, value: 0 },
+            { name: "Gripper", min: -0.2, max: 1.57, value: 0 }
+        ];
+
+        let ros = null;
+        let trajectoryPublisher = null;
+        let isConnected = false;
+        let continuousMode = true; // Enable continuous publishing by default
+        let publishTimeout = null; // For debouncing rapid slider changes
+
+        // Initialize the interface
+        function init() {
+            createJointControls();
+            updatePreview();
+            toggleContinuousMode(); // Initialize continuous mode UI
+        }
+
+        // Create joint control sliders
+        function createJointControls() {
+            const container = document.getElementById('jointControls');
+            
+            joints.forEach((joint, index) => {
+                const jointDiv = document.createElement('div');
+                jointDiv.className = 'joint-control';
+                
+                jointDiv.innerHTML = `
+                    <div class="joint-header">
+                        <span class="joint-name">${joint.name}</span>
+                        <span class="joint-value" id="value-${index}">${joint.value.toFixed(3)}</span>
+                    </div>
+                    <div class="joint-limits">
+                        Range: ${joint.min.toFixed(2)} to ${joint.max.toFixed(2)} radians
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" 
+                               class="slider" 
+                               id="slider-${index}"
+                               min="${joint.min}" 
+                               max="${joint.max}" 
+                               step="0.01" 
+                               value="${joint.value}"
+                               oninput="updateJointValue(${index}, this.value)">
+                    </div>
+                `;
+                
+                container.appendChild(jointDiv);
+            });
+        }
+
+        // Update joint value when slider changes
+        function updateJointValue(index, value) {
+            joints[index].value = parseFloat(value);
+            document.getElementById(`value-${index}`).textContent = parseFloat(value).toFixed(3);
+            updatePreview();
+            
+            // Continuous publishing when connected with debouncing
+            if (isConnected && continuousMode) {
+                // Clear previous timeout to debounce rapid changes
+                if (publishTimeout) {
+                    clearTimeout(publishTimeout);
+                }
+                
+                // Publish after a short delay to avoid overwhelming the system
+                publishTimeout = setTimeout(() => {
+                    publishTrajectory(true); // Pass true for continuous mode
+                }, 50); // 50ms debounce delay
+            }
+        }
+
+        // Toggle ROS connection
+        function toggleConnection() {
+            if (isConnected) {
+                disconnect();
+            } else {
+                connect();
+            }
+        }
+
+        // Connect to ROS
+        function connect() {
+            const url = document.getElementById('rosBridgeUrl').value;
+            
+            ros = new ROSLIB.Ros({
+                url: url
+            });
+
+            ros.on('connection', function() {
+                console.log('Connected to websocket server.');
+                isConnected = true;
+                updateConnectionStatus();
+                
+                // Create trajectory publisher
+                trajectoryPublisher = new ROSLIB.Topic({
+                    ros: ros,
+                    name: '/joint_trajectory_controller/joint_trajectory',
+                    messageType: 'trajectory_msgs/JointTrajectory'
+                });
+            });
+
+            ros.on('error', function(error) {
+                console.log('Error connecting to websocket server: ', error);
+                isConnected = false;
+                updateConnectionStatus();
+                alert('Failed to connect to ROS bridge. Please check the URL and try again.');
+            });
+
+            ros.on('close', function() {
+                console.log('Connection to websocket server closed.');
+                isConnected = false;
+                updateConnectionStatus();
+            });
+        }
+
+        // Disconnect from ROS
+        function disconnect() {
+            if (ros) {
+                ros.close();
+            }
+            isConnected = false;
+            updateConnectionStatus();
+        }
+
+        // Update connection status display
+        function updateConnectionStatus() {
+            const statusElement = document.getElementById('connectionStatus');
+            const connectBtn = document.getElementById('connectBtn');
+            const publishBtn = document.getElementById('publishBtn');
+            
+            if (isConnected) {
+                statusElement.textContent = 'Connected';
+                statusElement.className = 'status connected';
+                connectBtn.textContent = 'Disconnect';
+                publishBtn.disabled = false;
+            } else {
+                statusElement.textContent = 'Disconnected';
+                statusElement.className = 'status disconnected';
+                connectBtn.textContent = 'Connect';
+                publishBtn.disabled = true;
+            }
+        }
+
+        // Update message preview
+        function updatePreview() {
+            const timeSec = parseInt(document.getElementById('timeSec').value) || 1;
+            const timeNanosec = parseInt(document.getElementById('timeNanosec').value) || 0;
+            
+            const message = {
+                joint_names: joints.map(joint => joint.name),
+                points: [{
+                    positions: joints.map(joint => joint.value),
+                    velocities: [],
+                    accelerations: [],
+                    effort: [],
+                    time_from_start: {
+                        sec: timeSec,
+                        nanosec: timeNanosec
+                    }
+                }]
+            };
+
+            document.getElementById('messagePreview').textContent = JSON.stringify(message, null, 2);
+        }
+
+        // Toggle continuous mode
+        function toggleContinuousMode() {
+            continuousMode = document.getElementById('continuousToggle').checked;
+            const publishBtn = document.getElementById('publishBtn');
+            
+            if (continuousMode) {
+                publishBtn.style.opacity = '0.6';
+                publishBtn.textContent = '📡 Auto Mode Active';
+            } else {
+                publishBtn.style.opacity = '1';
+                publishBtn.textContent = '📡 Publish Trajectory';
+            }
+        }
+
+        // Publish trajectory
+        function publishTrajectory(isContinuous = false) {
+            if (!isConnected || !trajectoryPublisher) {
+                if (!isContinuous) {
+                    alert('Not connected to ROS bridge. Please connect first.');
+                }
+                return;
+            }
+
+            const timeSec = parseInt(document.getElementById('timeSec').value) || 1;
+            const timeNanosec = parseInt(document.getElementById('timeNanosec').value) || 0;
+            
+            const trajectory = new ROSLIB.Message({
+                joint_names: joints.map(joint => joint.name),
+                points: [{
+                    positions: joints.map(joint => joint.value),
+                    velocities: [],
+                    accelerations: [],
+                    effort: [],
+                    time_from_start: {
+                        sec: timeSec,
+                        nanosec: timeNanosec
+                    }
+                }]
+            });
+
+            trajectoryPublisher.publish(trajectory);
+            
+            // Visual feedback only for manual publishes
+            if (!isContinuous) {
+                const publishBtn = document.getElementById('publishBtn');
+                const originalText = publishBtn.textContent;
+                publishBtn.textContent = '✅ Published!';
+                
+                setTimeout(() => {
+                    publishBtn.textContent = originalText;
+                }, 1000);
+            }
+
+            console.log('Published trajectory:', trajectory);
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

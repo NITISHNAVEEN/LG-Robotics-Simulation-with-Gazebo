@@ -25,7 +25,7 @@ RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 COPY ./src /home/SO_arm_100_ws/src
 
 # Make the script executable during the build
-RUN chmod +x /home/SO_arm_100_ws/src/lg_arm/controller/jacobian.py
+RUN chmod +x /home/SO_arm_100_ws/src/lg_arm_control/controller/jacobian.py
 
 WORKDIR /home/SO_arm_100_ws
 
@@ -33,4 +33,4 @@ RUN /bin/bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && colcon build"
 
 RUN echo "source /home/SO_arm_100_ws/install/setup.bash" >> ~/.bashrc
 
-CMD ["/bin/bash", "-c", "source /opt/ros/${ROS_DISTRO}/setup.bash && source /home/SO_arm_100_ws/install/setup.bash && ros2 launch lg_arm joystick.launch.xml"]
+CMD ["/bin/bash", "-c", "source /opt/ros/${ROS_DISTRO}/setup.bash && source /home/SO_arm_100_ws/install/setup.bash && ros2 launch lg_arm_control joystick.launch.xml"]
