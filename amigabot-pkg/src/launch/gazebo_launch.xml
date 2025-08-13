@@ -1,0 +1,32 @@
+<launch>
+
+    <let name="gazebo_config_path" value="$(find-pkg-share amigabot_pkg)/config/gazebo_bridge.yaml" />
+
+    <let name="urdf_path" value="$(find-pkg-share amigabot_pkg)/urdf/groundbot/amigabot.urdf.xacro" />
+
+    <set_env name="GZ_SIM_RESOURCE_PATH" value="$(find-pkg-share amigabot_pkg)" />
+    
+    <node pkg="robot_state_publisher" exec="robot_state_publisher">
+        <param name="robot_description" value="$(command 'xacro $(var urdf_path)')"></param>
+    </node>
+
+    <include file="$(find-pkg-share ros_gz_sim)/launch/gz_sim.launch.py">
+        <arg name="gz_args" value="$(find-pkg-share amigabot_pkg)/worlds/new_world.sdf -r" />
+        <!-- <arg name="gz_args" value="empty.sdf -r" /> -->
+    </include>
+
+    <node pkg="ros_gz_sim" exec="create" args="-topic robot_description" />
+
+    <node pkg="ros_gz_bridge" exec="parameter_bridge">
+        <param name="config_file" 
+               value="$(var gazebo_config_path)" />
+    </node>
+
+    <node pkg="amigabot_pkg" exec="joystick_listener.py" output="screen" />
+
+    <node pkg="rosbridge_server" 
+          exec="rosbridge_websocket" 
+          name="rosbridge_websocket" 
+          output="screen"/>
+
+</launch>
