@@ -3,7 +3,7 @@
 ### Prerequisites
 
 - OS: Linux
-- Docker and Docker Compose v2
+- [Docker and Docker Compose v2](https://github.com/LiquidGalaxyLAB/LG-Robotics-Simulation-with-Gazebo/blob/lg-robotics-docker-server/Docker-Installation.md)
 - [Nvidia Drivers Installed and Configured for Docker](https://github.com/LiquidGalaxyLAB/LG-Robotics-Simulation-with-Gazebo/blob/lg-robotics-docker-server/Nvidia-Docker.md)
 - [Nvidia X Server Settings Configured](https://github.com/LiquidGalaxyLAB/LG-Robotics-Simulation-with-Gazebo/blob/lg-robotics-docker-server/Nvidia-X-Server.md)
 

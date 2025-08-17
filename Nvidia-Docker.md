@@ -1,26 +1,54 @@
-### For using GPU Acceleation while running the Docker Image on a Server, it would need to install Nvidia Drivers if not installed already
+# Nvidia Docker Setup
+
+For utilising GPU Acceleation while running the Docker Image on a Server, it would need to install Nvidia Drivers if not installed already.
 
 To Check if the Driver is already installed and correctly configured, use the command `nvidia-smi` . If you can see the details of your GPU and driver skip to the Runtime Configuration Zone. 
 
 Sample Correct Output:
-![nvidia-smi-configured](assets/nvidia-smi.png)
+<!-- ![nvidia-smi-configured](assets/nvidia-smi.png) -->
 
+## Nvidia Driver Installation
 
-1. For Ubuntu 22.04 LTS use the command:
+1. Check the available drivers for your hardware:
+
 ```bash
-sudo apt update
-sudo apt install -y nvidia-driver-535
+sudo ubuntu-drivers list
 ```
-2. Then reboot:
+
+You should see a list such as the following:
+```
+nvidia-driver-470
+nvidia-driver-470-server
+nvidia-driver-535
+nvidia-driver-535-open
+nvidia-driver-535-server
+nvidia-driver-535-server-open
+nvidia-driver-550
+nvidia-driver-550-open
+nvidia-driver-550-server
+nvidia-driver-550-server-open
+```
+
+2. Install the driver that is considered the best match for your hardware:
+
+```bash
+sudo ubuntu-drivers install
+```
+
+3. Then reboot:
 ```bash
 sudo reboot
 ```
+4. Now Verify using:
+```bash
+nvidia-smi
+```
+If you can see your GPU details in the terminal, you are good to resume your runtime container setup.
 
-> Note: Look up the compatible Nvidia Drivers for your GPU if 535 does not work for you
 
-### Next the runtime of docker has to be modified and to support this, some tools have to be downloaded
+## Nvidia Runtime Container Toolkit Installation
 
-These tools are partially taken from [here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#prerequisites)
+Source for this documentation: [here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#prerequisites)
 
 1. Configure the production repository:
 ```bash
@@ -49,8 +77,3 @@ sudo systemctl restart docker
 ```bash
 sudo nvidia-ctk runtime configure --runtime=containerd
 ```
-### Now Verify using:
-```bash
-nvidia-smi
-```
-If you can see your GPU details in the terminal, you are good to resume your docker server setup.
