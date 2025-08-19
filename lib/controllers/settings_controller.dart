@@ -269,6 +269,7 @@ class SettingsController extends GetxController {
       }
 
     for  (var i = int.parse(_rigs); i >=1; i--) {
+      
       if(i>((_totalRigs!/2)+1)){
         _streamPort = 8083-(_totalRigs!-i+1);
       }
@@ -331,12 +332,14 @@ class SettingsController extends GetxController {
     if (checkvalid(code)) {
       // print("QR Controller - QR Code is valid");
       final data = json.decode(code);
-      ipController.text = data["ip"];
-      usernameController.text = data["username"];
-      passwordController.text = data["password"];
-      sshPortController.text = data["port"];
-      rigsController.text = data["screens"];
-    }
+      ipController.text = data["ip"].toString(); 
+      usernameController.text = data["username"].toString();
+      passwordController.text = data["password"].toString();
+      sshPortController.text = data["port"].toString(); 
+      rigsController.text = data["screens"].toString(); 
+      } else{
+        Get.snackbar("Error", "Invalid QR Code format");
+      }
     // Add a small delay to ensure the value is set before navigating back
     Future.delayed(const Duration(milliseconds: 100), () {
       // print("QR Controller - Navigating back");
