@@ -278,11 +278,14 @@ class SettingsController extends GetxController {
       }
 
       await sendCommand('sshpass -p $pw ssh -t lg$i "pkill -f chromium-browser"');
+      await Future.delayed(const Duration(milliseconds: 200));
 
-      sendCommand(
-        'sshpass -p $pw ssh -t lg$i "DISPLAY=:0 chromium-browser --start-fullscreen $streamIp:$_streamPort"'
-      );
-    }
+      String launchCommand = 
+        'sshpass -p $pw ssh -t lg$i "DISPLAY=:0 chromium-browser --start-fullscreen $streamIp:$_streamPort > /dev/null 2>&1 &"';
+      
+      await sendCommand(launchCommand);
+      
+    } 
   }
 
   Future<void> closeStream() async {
