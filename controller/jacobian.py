@@ -18,7 +18,7 @@ class ArmController(Node):
         self.alpha = [0.0]*6
         self.theta = [0.0]*6
         self.K = 0.4   # Proportional gain
-        self.dt = 0.5 # Time step in seconds
+        self.dt = 0.1  # Faster control loop (10Hz) for smoother movement
         self.vx = 0.0
         self.vz = 0.0
         self.vy = 0.0
@@ -30,11 +30,12 @@ class ArmController(Node):
         self.timer = self.create_timer(self.dt, self.control_loop)
     
     def joint_state_callback(self, msg):
+        self.alpha[0] = msg.position[0] # Shoulder Rotation (Base)
         self.alpha[1] = msg.position[1] # shoulder pitch
         self.alpha[2] = msg.position[2] # elbow
         self.alpha[3] = msg.position[3] # wrist pitch
         self.theta[1] = msg.position[1]
-        self.theta[2] = msg.position[2] + 1.57 
+        self.theta[2] = msg.position[2] + 1.57 # Offset for standard DH convention
         self.theta[3] = msg.position[3] +1.57 
 
     def publish_joint_angles(self, command0, command1, command2, command3, command4):
@@ -63,9 +64,9 @@ class ArmController(Node):
 
     def joystick_callback(self, msg):
         if len(msg.data) >= 2:
-            self.vy = msg.data[0]
-            self.vx = msg.data[1]
-            self.vz = msg.data[2]
+            self.vy = msg.data[0] # Base Rotation speed
+            self.vx = msg.data[1] # Forward/Backward speed
+            self.vz = msg.data[2] # Up/Down speed
             self.gripper = msg.data[3]
             self.get_logger().info(f"Joystick updated: vx={self.vx}, vz={self.vz}")
     
@@ -79,13 +80,13 @@ class ArmController(Node):
         c123 = math.cos(t1 + t2 + t3)
 
         # Derivatives of x (horizontal) and z (vertical)
-        j11 = L1 * c1 + L2 * c12 + L3 * c123
-        j12 = L2 * c12 + L3 * c123
-        j13 = L3 * c123
+        j21 = L1 * c1 + L2 * c12 + L3 * c123
+        j22 = L2 * c12 + L3 * c123
+        j23 = L3 * c123
 
-        j21 = -L1 * s1 - L2 * s12 - L3 * s123
-        j22 = -L2 * s12 - L3 * s123
-        j23 = -L3 * s123
+        j11 = -L1 * s1 - L2 * s12 - L3 * s123
+        j12 = -L2 * s12 - L3 * s123
+        j13 = -L3 * s123
 
         J = np.array([
             [j11, j12, j13],
@@ -97,27 +98,32 @@ class ArmController(Node):
 
         vy, vx, vz, gripper = self.vy, self.vx, self.vz, self.gripper
         # print((vx,vz))
-        end_effector_velocity = np.array([[vx], [vz]])
+        # Create velocity vector from joystick
+        end_effector_velocity = np.array([[self.vx], [self.vz]])
 
         J = self.calculate_jacobian()
 
-        # Compute pseudoinverse of the Jacobian
-        J_pinv = np.linalg.pinv(J)
+        # Damped Pseudo-inverse to handle singularities smoothly
+        damping = 0.02
+        J_pinv = J.T @ np.linalg.inv(J @ J.T + damping**2 * np.eye(2))
 
         # Compute joint velocities
-        joint_velocities = J_pinv @ end_effector_velocity
+        joint_velocities = (J_pinv @ end_effector_velocity).flatten()
 
-        # Compute new joint angles
-        delta_thetas = joint_velocities.flatten() * self.K * 0.1
-        command1 = self.theta[1] + delta_thetas[0]
-        command2 = self.theta[2] + delta_thetas[1]
-        command3 = self.theta[3] + delta_thetas[2]
+        # Update angles using integration: New = Old + (Velocity * Time * Gain)
+        # Note: we update theta, then convert back to alpha for publishing
+        new_theta1 = self.theta[1] + joint_velocities[0] * self.K * self.dt
+        new_theta2 = self.theta[2] + joint_velocities[1] * self.K * self.dt
+        new_theta3 = self.theta[3] + joint_velocities[2] * self.K * self.dt
+        
+        # Update Base rotation (Direct mapping)
+        new_base = self.alpha[0] + self.vy * self.K * self.dt
 
         # Optional: Clamp joint angles if needed
-        # new_thetas = np.clip(new_thetas, -np.pi, np.pi)
+        new_thetas = np.clip(new_thetas, -np.pi, np.pi)
 
-        # Send command
-        self.publish_joint_angles(vy, command1, command2, command3, gripper)
+        # Publish the new positions
+        self.publish_joint_angles(new_base, new_theta1, new_theta2, new_theta3, self.gripper)
 
 def main():
     rclpy.init()
